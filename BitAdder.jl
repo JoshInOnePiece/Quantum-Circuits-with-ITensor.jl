@@ -1,23 +1,25 @@
+#initializing libraries
 using ITensors
 using Printf
 
 let
-    
-    
+    #takes in input for first binary number and puts it into an array
     print("Input 1st N-Bit Binary Number: ")
     bit1String = readline()
     bit1Array = Array{Int64}(undef, length(bit1String))
     for i = length(bit1String):-1:1
         bit1Array[i] = parse(Int64, bit1String[i])
     end
-    
+
+    #takes input for second binary number and puts it into an array
     print("Input 2nd N-Bit Binary Number: ")
     bit2String = readline()
     bit2Array = Array{Int64}(undef, length(bit2String))
     for i = length(bit2String):-1:1
         bit2Array[i] = parse(Int64, bit2String[i])
     end
-    
+
+    #Finds out which string is longer and sets the array of the smaller number to the same size as the larger number
     if length(bit1String) > length(bit2String)
         for i in 1:(length(bit1String)-length(bit2String))
             pushfirst!(bit2Array,0)
@@ -55,8 +57,7 @@ let
                 index = lengthOfEachBit+lengthOfEachBit-(i-1)
                 hj = op("X",s[index])
                 push!(gates, hj)
-            end
-            
+            end  
         end
         
         #Half Adder Code
