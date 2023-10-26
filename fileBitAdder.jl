@@ -2,14 +2,18 @@ using ITensors
 using Printf
 
 let
+    #Names of input and output files
+    inputFileName = raw"C:\Users\manik\OneDrive\Documents\Josh's Quantum World\adderInput.txt"
+    outputFileName = raw"C:\Users\manik\OneDrive\Documents\Josh's Quantum World\adderOutput.txt"
+
     #opens file from which input is stored
-    f = open(raw"C:\Users\manik\OneDrive\Documents\Josh's Quantum World\adderInput.txt","r")
+    inputFile = open(inputFileName,"r")
 
     #reads in input
     bit1String = " "
     bit2String = " "
-    bit1String = readline(f)
-    bit2String = readline(f)
+    bit1String = readline(inputFile)
+    bit2String = readline(inputFile)
     
     #Parses input into and integer and stores it into an array
     bit1Array = Array{Int64}(undef, length(bit1String))
@@ -91,11 +95,15 @@ let
             push!(gates, hj) 
         end
         
-        #Opens file where output will be stored and measures the sites to find the output
+        #Opens file where output will be stored 
         psi = apply(gates, psi; cutoff)
-        outputFile = open(raw"C:\Users\manik\OneDrive\Documents\Josh's Quantum World\adderOutput.txt", "w")
+        outputFile = open(outputFileName, "w")
+
+        #Result Array will be used to store the output in the file and print it on the terminal
         result = Array{Int64}(undef, lengthOfEachBit+1)
         print("Answer: ");
+
+        #Iterating through the sites and measuring them to get the output
         measurement = 4*lengthOfEachBit;
         result[1] = expect(psi, "Proj1", sites = measurement)
         measurement = measurement-1
@@ -104,12 +112,13 @@ let
             measurementSum = measurement - 2(i-2)
             result[i] = expect(psi, "Proj1", sites = measurementSum)
         end
+
+        #Outputs sum to the output and prints it on the terminal
         for i in 1:(lengthOfEachBit+1)
             write(outputFile, string(result[i]))
             @printf("%i", result[i]);
         end
         close(outputFile)
     return
-    
-    close(f)
+    close(inputFile)
   end
