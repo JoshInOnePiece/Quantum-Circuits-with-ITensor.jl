@@ -1,6 +1,28 @@
 using ITensors
 using Statistics
 using Printf
+#Swaps the sites
+function swap(s, gates, start, ending)
+    let 
+        psi = MPS(s,"Up")
+        for i in (start):(ending-1)
+            hj = op("SWAP",[s[i],s[i+1]])
+            push!(gates, hj)
+        end 
+    end
+end
+#It swaps the sights. It's named unswap for readability
+#You should put the same exact parameters in the same order of the swap function that was called previously in the code
+function unswap(s, gates, start, ending)
+    let 
+        psi = MPS(s,"Up")
+        for i = (ending):-1:(start+1)
+            hj = op("SWAP",[s[i],s[i-1]])
+            push!(gates, hj)
+        end
+        
+    end
+end
 
 function adderCircuit(inputFile, outputFile)
     let
@@ -66,28 +88,58 @@ function adderCircuit(inputFile, outputFile)
             end
             
             #Half Adder Code
-            hj = op("CX",[s[1],s[lengthOfEachBit*2+1]])
+            swap(s, gates, 1, lengthOfEachBit*2)
+            hj = op("CX",[s[lengthOfEachBit*2],s[lengthOfEachBit*2+1]])
             push!(gates, hj)
-            hj = op("CX",[s[lengthOfEachBit+1],s[lengthOfEachBit*2+1]])
-            push!(gates, hj)
-            hj = op("Toffoli",[s[1],s[lengthOfEachBit+1],s[2*lengthOfEachBit+2]])
-            push!(gates, hj)
+            unswap(s, gates, 1, lengthOfEachBit*2)
 
-            #Full Adder Code
+            swap(s, gates, lengthOfEachBit+1, lengthOfEachBit*2)
+            hj = op("CX",[s[2*lengthOfEachBit],s[lengthOfEachBit*2+1]])
+            push!(gates, hj)
+            unswap(s, gates, lengthOfEachBit+1, lengthOfEachBit*2)
+
+            swap(s, gates, lengthOfEachBit+1, 2*lengthOfEachBit+1)
+            swap(s, gates, 1, 2*lengthOfEachBit)
+            hj = op("Toffoli",[s[2*lengthOfEachBit],s[2*lengthOfEachBit+1],s[2*lengthOfEachBit+2]])
+            push!(gates, hj)
+            unswap(s, gates, 1, 2*lengthOfEachBit)
+            unswap(s, gates, lengthOfEachBit+1, 2*lengthOfEachBit+1)
+
+            #Full adder
             for i in 1:(lengthOfEachBit-1)
+                swap(s, gates, 1+i, 2*lengthOfEachBit+2i)
+                hj = op("CX",[s[2*lengthOfEachBit+2i],s[2*lengthOfEachBit+2i+1]])
+                push!(gates, hj) 
+                unswap(s, gates, 1+i, 2*lengthOfEachBit+2i)
 
-                hj = op("CX",[s[1+i],s[2*lengthOfEachBit+2i+1]])
-                push!(gates, hj) 
-                hj = op("CX",[s[lengthOfEachBit+i+1],s[2*lengthOfEachBit+2*i+1]])
-                push!(gates, hj) 
+                swap(s, gates, lengthOfEachBit+i+1, 2*lengthOfEachBit+2*i)
                 hj = op("CX",[s[2*lengthOfEachBit+2*i],s[2*lengthOfEachBit+2*i+1]])
                 push!(gates, hj)
-                hj = op("Toffoli",[s[1+i],s[1+i+lengthOfEachBit],s[2*lengthOfEachBit+2*i+2]])
+                unswap(s, gates, lengthOfEachBit+i+1, 2*lengthOfEachBit+2*i)
+                
+                hj = op("CX",[s[2*lengthOfEachBit+2*i],s[2*lengthOfEachBit+2*i+1]])
                 push!(gates, hj)
-                hj = op("Toffoli",[s[1+i],s[2*lengthOfEachBit+2*i],s[2*lengthOfEachBit+2*i+2]])
+
+                swap(s, gates, 1+i+lengthOfEachBit, 2*lengthOfEachBit+2*i+1)
+                swap(s, gates, 1+i, 2*lengthOfEachBit+2*i)
+                hj = op("Toffoli",[s[2*lengthOfEachBit+2*i],s[2*lengthOfEachBit+2*i+1],s[2*lengthOfEachBit+2*i+2]])
                 push!(gates, hj)
-                hj = op("Toffoli",[s[1+i+lengthOfEachBit],s[2*lengthOfEachBit+2*i],s[2*lengthOfEachBit+2*i+2]])
+                unswap(s, gates, 1+i, 2*lengthOfEachBit+2*i)
+                unswap(s, gates, 1+i+lengthOfEachBit, 2*lengthOfEachBit+2*i+1)
+
+                swap(s, gates, 2*lengthOfEachBit+2*i, 2*lengthOfEachBit+2*i+1)
+                swap(s, gates, 1+i, 2*lengthOfEachBit+2*i)
+                hj = op("Toffoli",[s[2*lengthOfEachBit+2*i],s[2*lengthOfEachBit+2*i+1],s[2*lengthOfEachBit+2*i+2]])
+                push!(gates, hj)
+                unswap(s, gates, 1+i, 2*lengthOfEachBit+2*i)
+                unswap(s, gates, 2*lengthOfEachBit+2*i, 2*lengthOfEachBit+2*i+1)
+
+                swap(s, gates, 2*lengthOfEachBit+2*i, 2*lengthOfEachBit+2*i+1)
+                swap(s, gates, 1+i+lengthOfEachBit, 2*lengthOfEachBit+2*i)
+                hj = op("Toffoli",[s[2*lengthOfEachBit+2*i],s[2*lengthOfEachBit+2*i+1],s[2*lengthOfEachBit+2*i+2]])
                 push!(gates, hj) 
+                unswap(s, gates, 1+i+lengthOfEachBit, 2*lengthOfEachBit+2*i)
+                unswap(s, gates, 2*lengthOfEachBit+2*i, 2*lengthOfEachBit+2*i+1)
             end
             
             #Opens file where output will be stored 
