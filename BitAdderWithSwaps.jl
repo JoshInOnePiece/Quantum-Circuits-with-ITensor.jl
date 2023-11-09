@@ -23,9 +23,9 @@ function unswap(s, gates, start, ending)
         
     end
 end
-function calcEntanglement(siteIndex, entanglement, psi)
-    entanglement = 0.0;
-    orthogonalize!(psi, siteIndex)
+function calcEntanglement(siteIndex, psi)
+    entanglement = 0.0
+	orthogonalize!(psi, siteIndex)
     U,S,V = svd(psi[siteIndex], (linkind(psi, siteIndex-1), siteind(psi,siteIndex)))
     SvN = 0.0
     for n=1:dim(S, 1)
@@ -37,19 +37,17 @@ function calcEntanglement(siteIndex, entanglement, psi)
 end
 function printEverySiteEntanglement(N,psi)
     for i in 2:N
-        entanglement = 0.0;
-        calcEntanglement(i, entanglement, psi)
+        entanglement = calcEntanglement(i,psi)
         print("\nSite $i: $entanglement")
     end
 end
 function summationOfSiteEntanglement(N, psi)
     total = 0.0;
     for i in 2:N
-        entanglement = 0.0;
-        total += calcEntanglement(i, entanglement, psi)
-        print("\nSite $i: $entanglement")
+        total += calcEntanglement(i, psi)
+        #print("\nSite $i: $total()")
     end
-    print("\nTotal Entanglement: $total")
+    #print("\nTotal Entanglement: $total")
     return total
 end
 let
@@ -166,8 +164,14 @@ let
         end
         
         psi = apply(gates, psi; cutoff)
-        
+
+        print("\n\n")
+        printEverySiteEntanglement(N,psi);
+        totalEntanglement = summationOfSiteEntanglement(N, psi);
+		averageEntanglement = totalEntanglement/(N-1)
+		print("\nTotal Entanglement: $averageEntanglement")
         result = Array{Int64}(undef, lengthOfEachBit+1)
+
         print("Answer: ");
         measurement = 4*lengthOfEachBit;
         result[1] = expect(psi, "Proj1", sites = measurement)
@@ -182,8 +186,6 @@ let
             @printf("%i", result[i]);
         end
 
-        entanglement = 0.0;
-        printEverySiteEntanglement(N,psi);
-        totalEntanglement = summationOfSiteEntanglement(N, psi);
+        
     return
 end
