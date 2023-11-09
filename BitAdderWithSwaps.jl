@@ -13,7 +13,6 @@ function swap(s, gates, start, ending)
         end 
     end
 end
-
 function unswap(s, gates, start, ending)
     let 
         psi = MPS(s,"Up")
@@ -23,6 +22,35 @@ function unswap(s, gates, start, ending)
         end
         
     end
+end
+function calcEntanglement(siteIndex, entanglement, psi)
+    entanglement = 0.0;
+    orthogonalize!(psi, siteIndex)
+    U,S,V = svd(psi[siteIndex], (linkind(psi, siteIndex-1), siteind(psi,siteIndex)))
+    SvN = 0.0
+    for n=1:dim(S, 1)
+        p = S[n,n]^2
+        entanglement -= p * log(p)
+    end
+
+    return entanglement
+end
+function printEverySiteEntanglement(N,psi)
+    for i in 2:N
+        entanglement = 0.0;
+        calcEntanglement(i, entanglement, psi)
+        print("\nSite $i: $entanglement")
+    end
+end
+function summationOfSiteEntanglement(N, psi)
+    total = 0.0;
+    for i in 2:N
+        entanglement = 0.0;
+        total += calcEntanglement(i, entanglement, psi)
+        print("\nSite $i: $entanglement")
+    end
+    print("\nTotal Entanglement: $total")
+    return total
 end
 let
     #takes in input for first binary number and puts it into an array
@@ -153,6 +181,9 @@ let
             
             @printf("%i", result[i]);
         end
-        
+
+        entanglement = 0.0;
+        printEverySiteEntanglement(N,psi);
+        totalEntanglement = summationOfSiteEntanglement(N, psi);
     return
 end
