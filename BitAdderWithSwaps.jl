@@ -23,6 +23,7 @@ function unswap(s, gates, start, ending)
         
     end
 end
+#Calculates the Entanglement using Single Value Decomposition
 function calcEntanglement(siteIndex, psi)
     entanglement = 0.0
 	orthogonalize!(psi, siteIndex)
@@ -35,12 +36,14 @@ function calcEntanglement(siteIndex, psi)
 
     return entanglement
 end
+
 function printEverySiteEntanglement(N,psi)
     for i in 2:N
         entanglement = calcEntanglement(i,psi)
         print("\nSite $i: $entanglement")
     end
 end
+
 function summationOfSiteEntanglement(N, psi)
     total = 0.0;
     for i in 2:N
@@ -169,9 +172,9 @@ let
         printEverySiteEntanglement(N,psi);
         totalEntanglement = summationOfSiteEntanglement(N, psi);
 		averageEntanglement = totalEntanglement/(N-1)
-		print("\nTotal Entanglement: $averageEntanglement")
-        result = Array{Int64}(undef, lengthOfEachBit+1)
+		print("\nTotal Entanglement: $averageEntanglement\n")
 
+        result = Array{Int64}(undef, lengthOfEachBit+1)
         print("Answer: ");
         measurement = 4*lengthOfEachBit;
         result[1] = expect(psi, "Proj1", sites = measurement)
