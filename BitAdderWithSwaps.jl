@@ -168,7 +168,7 @@ let
         
         psi = apply(gates, psi; cutoff)
 
-        printf("\n\nEntanglement at each site:")
+        print("\n\nEntanglement at each site:")
         printEverySiteEntanglement(N,psi);
         totalEntanglement = summationOfSiteEntanglement(N, psi);
 		averageEntanglement = totalEntanglement/(N-1)
