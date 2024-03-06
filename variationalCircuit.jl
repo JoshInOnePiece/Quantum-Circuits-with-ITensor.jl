@@ -68,9 +68,16 @@ let
 		end
 
 		print("\n\n")
-        printEverySiteEntanglement(N,psi);
-        totalEntanglement = summationOfSiteEntanglement(N, psi);
-		averageEntanglement = totalEntanglement/(N-1)
-		print("\nTotal Entanglement: $averageEntanglement")
+		print("What entanglement: ")
+		numSiteString = readline()
+		numSite = parse(Int64, numSiteString)
+		entanglementOfSetOfSites = calcEntanglement(numSite, psi)
+		print("Entanglement between sites 1 - $numSite: $entanglementOfSetOfSites\n")
+		print("Total Entanglement: ")
+		totalEntanglement = summationOfSiteEntanglement(N, psi)
+		print("$totalEntanglement\n")
+		print("Average Entanglement: ")
+		averageEntanglement = totalEntanglement/N
+		print("$averageEntanglement\n")
 	return
 end
