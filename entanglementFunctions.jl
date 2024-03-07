@@ -20,7 +20,7 @@ function summationOfSiteEntanglement(N, psi)
     total = 0.0;
     for i in 2:N
         total += calcEntanglement(i, psi)
-        #print("\nSite $i: $total()")
+        #print("\nSite $i: $total")
     end
     #print("\nTotal Entanglement: $total")
     return total
