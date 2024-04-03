@@ -1,7 +1,8 @@
 using ITensors
+using Plots
 using Statistics
-include(raw"C:\Users\manik\Documents\Quantum-Circuits-with-ITensor.jl\Functions Library\File IO Functions\fileEntanglementFunctions.jl")
 function fileVariationalCircuit(inputFile, outputFile)
+    include(raw"Functions Library\File IO Functions\fileEntanglementFunctions.jl")
     let
         #Reads inputs values
         numOfSteps = readline(inputFile)
@@ -39,13 +40,22 @@ function fileVariationalCircuit(inputFile, outputFile)
             # Initialize psi to be a product state (alternating up and down)
             psi = MPS(s, n -> isodd(n) ? "Up" : "Dn")
             Rz = Array{Float64}(undef, N)
+            measurementArray = Array{Float64}(undef, Int.(ttotal/tau)+1)
+            timeStepsArray = Array{Float64}(undef, Int.(ttotal/tau)+1)
+            counter = 1
             # Compute and print <Sz> at each time step
             # then apply the gates to go to the next time
             for t in 0.0:tau:ttotal
+                Rz = Array{Float64}(undef, N)
                 for c in 1:1:N
                     Rz[c] = expect(psi, "Sz"; sites=c)
                     average = mean(Rz)
                     write(outputFile, "Site $c at $t: $average \n")
+                    if(c == N)
+                        timeStepsArray[counter] = t
+                        measurementArray[counter] = average
+                        counter = counter + 1
+                    end
                     #println("Site $c at $t: $average")
                 end
                 t≈ttotal && break
@@ -53,6 +63,10 @@ function fileVariationalCircuit(inputFile, outputFile)
                 normalize!(psi)
             end
             filePromptForMeasuringEntanglement(inputFile, outputFile, N, psi)
+            scatter(timeStepsArray, measurementArray, xlabel="Time", ylabel="S_z", show = true, label = "Sz", title = "Sz values of Variational Ansantz Circuit over Time")
+            #If you want a linear line
+            #plot(timeStepsArray, measurementArray, xlabel="Time", ylabel="S_z", show = true) if yo
+            savefig(raw"IO FILES\Scatterplots\VariationalAnsatzScatterPlot.png")
         return   
     end
 end

@@ -4,8 +4,8 @@ In order to connect gates of sites that are not adjacent is to swap the value wi
 =#
 using ITensors
 using Printf
-include(raw"C:\Users\manik\Documents\Quantum-Circuits-with-ITensor.jl\Functions Library\Terminal Functions\entanglementFunctions.jl")
-include(raw"C:\Users\manik\Documents\Quantum-Circuits-with-ITensor.jl\Functions Library\General Functions\swapGates.jl")
+include(raw"Functions Library\Terminal Functions\entanglementFunctions.jl")
+include(raw"Functions Library\General Functions\swapGates.jl")
 let
     #takes in input for first binary number and puts it into an array
     print("Input 1st N-Bit Binary Number: ")

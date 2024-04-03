@@ -1,8 +1,7 @@
 using ITensors
 using Printf
-include(raw"C:\Users\manik\Documents\Quantum-Circuits-with-ITensor.jl\Functions Library\File IO Functions\fileEntanglementFunctions.jl")
-
 function fileAdderCircuit(inputFile, outputFile)
+    include(raw"Functions Library\File IO Functions\fileEntanglementFunctions.jl")
     let
         #reads in input
         bit1String = " "

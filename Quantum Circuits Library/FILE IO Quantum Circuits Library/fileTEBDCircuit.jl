@@ -1,7 +1,8 @@
 using ITensors
-include(raw"C:\Users\manik\Documents\Quantum-Circuits-with-ITensor.jl\Functions Library\File IO Functions\fileEntanglementFunctions.jl")
-
+using Plots
+using Statistics
 function fileTEBDCircuit(inputFile, outputFile)
+  include(raw"Functions Library\File IO Functions\fileEntanglementFunctions.jl")
   let
     numOfSteps = readline(inputFile)
     timeSteps = readline(inputFile)
@@ -40,20 +41,26 @@ function fileTEBDCircuit(inputFile, outputFile)
     psi = MPS(s, n -> isodd(n) ? "Up" : "Dn")
   
     c = div(N, 2) # center site
-  
+    measurementArray = Array{Float64}(undef, Int.(ttotal/tau)+1)
+    timeStepsArray = Array{Float64}(undef, Int.(ttotal/tau)+1)
+    counter = 1
     # Compute and print <Sz> at each time step
     # then apply the gates to go to the next time
     for t in 0.0:tau:ttotal
       Sz = expect(psi, "Sz"; sites=c)
       write(outputFile,"$t: $Sz\n")
-  
+      measurementArray[counter] = Sz
+      timeStepsArray[counter] = t
+      counter = counter + 1
       t≈ttotal && break
-  
       psi = apply(gates, psi; cutoff)
       normalize!(psi)
     end
-  
     filePromptForMeasuringEntanglement(inputFile,outputFile, N, psi)
+    scatter(timeStepsArray, measurementArray, xlabel="Time", ylabel="S_z", show = true, label = "Sz", title = "Sz values of TEBD Circuit over Time")
+    #If you want a linear line
+    #plot(timeStepsArray, measurementArray, xlabel="Time", ylabel="S_z", show = true) if yo
+    savefig(raw"IO FILES\Scatterplots\TEBDScatterPlot.png")
     return
   end
 end

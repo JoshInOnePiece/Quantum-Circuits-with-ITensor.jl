@@ -1,5 +1,5 @@
 using ITensors
-include(raw"C:\Users\manik\Documents\Quantum-Circuits-with-ITensor.jl\Functions Library\Terminal Functions\entanglementFunctions.jl")
+include(raw"Functions Library\Terminal Functions\entanglementFunctions.jl")
 let
 
     #Reads inputs values

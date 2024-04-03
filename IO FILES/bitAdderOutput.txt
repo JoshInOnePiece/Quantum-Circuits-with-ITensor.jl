@@ -1,5 +1,5 @@
-0010011
+010
 
-Entanglement between sites 1 - 5: 0.0
+Entanglement between sites 1 - 2: 0.0
 Total Entanglement: 0.0
 Average Entanglement: 0.0

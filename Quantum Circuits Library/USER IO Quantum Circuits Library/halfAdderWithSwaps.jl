@@ -1,24 +1,5 @@
 using ITensors
-function swap(s, gates, start, ending)
-    let 
-        psi = MPS(s,"Up")
-        for i in (start):(ending-1)
-            hj = op("SWAP",[s[i],s[i+1]])
-            push!(gates, hj)
-        end
-        
-    end
-end
-function unswap(s, gates, start, ending)
-    let 
-        psi = MPS(s,"Up")
-        for i = (ending):-1:(start+1)
-            hj = op("SWAP",[s[i],s[i-1]])
-            push!(gates, hj)
-        end
-        
-    end
-end
+include(raw"Functions Library\General Functions\swapGates.jl")
 
 let
     print("Input 1st Number: ")
@@ -39,7 +20,6 @@ let
         s3 = s[3]
         s4 = s[4]
         
-  
         psi = MPS(s,"Up")
         v0 = expect(psi, "Proj0"; sites = 1)
         v1 = expect(psi, "Proj1"; sites = 1)
@@ -79,7 +59,6 @@ let
         v1 = expect(psi, "Proj1"; sites = 4)
         println("Carry: $v0 |0> + $v1 |1>")
         
-  
         v = expect(psi, "Proj1", sites = 3)
         println("Value: $v")
         v = expect(psi, "Proj1", sites = 4)
