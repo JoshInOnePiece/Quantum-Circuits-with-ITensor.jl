@@ -1,4 +1,4 @@
-010
+Sum of bits: 010
 
 Entanglement between sites 1 - 2: 0.0
 Total Entanglement: 0.0

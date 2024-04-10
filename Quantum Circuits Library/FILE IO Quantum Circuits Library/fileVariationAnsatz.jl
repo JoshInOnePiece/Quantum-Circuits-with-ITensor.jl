@@ -45,6 +45,7 @@ function fileVariationalCircuit(inputFile, outputFile)
             counter = 1
             # Compute and print <Sz> at each time step
             # then apply the gates to go to the next time
+            write(outputFile, "Sz measurement at each site at each time step: \n")
             for t in 0.0:tau:ttotal
                 Rz = Array{Float64}(undef, N)
                 for c in 1:1:N
@@ -62,10 +63,12 @@ function fileVariationalCircuit(inputFile, outputFile)
                 psi = apply(gates, psi; cutoff)
                 normalize!(psi)
             end
+            #Function that measure and outputs the entanglement
             filePromptForMeasuringEntanglement(inputFile, outputFile, N, psi)
+            # Plots Scatter plot
             scatter(timeStepsArray, measurementArray, xlabel="Time", ylabel="S_z", show = true, label = "Sz", title = "Sz values of Variational Ansantz Circuit over Time")
             #If you want a linear line
-            #plot(timeStepsArray, measurementArray, xlabel="Time", ylabel="S_z", show = true) if yo
+            #plot(timeStepsArray, measurementArray, xlabel="Time", ylabel="S_z", show = true)
             savefig(raw"IO FILES\Scatterplots\VariationalAnsatzScatterPlot.png")
         return   
     end

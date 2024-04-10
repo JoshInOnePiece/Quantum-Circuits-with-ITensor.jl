@@ -46,6 +46,7 @@ function fileTEBDCircuit(inputFile, outputFile)
     counter = 1
     # Compute and print <Sz> at each time step
     # then apply the gates to go to the next time
+    write(outputFile, "Sz measurement at each time step: \n")
     for t in 0.0:tau:ttotal
       Sz = expect(psi, "Sz"; sites=c)
       write(outputFile,"$t: $Sz\n")
@@ -56,10 +57,12 @@ function fileTEBDCircuit(inputFile, outputFile)
       psi = apply(gates, psi; cutoff)
       normalize!(psi)
     end
+    #Measures the Entanglement across a certain number of sites
     filePromptForMeasuringEntanglement(inputFile,outputFile, N, psi)
     scatter(timeStepsArray, measurementArray, xlabel="Time", ylabel="S_z", show = true, label = "Sz", title = "Sz values of TEBD Circuit over Time")
-    #If you want a linear line
-    #plot(timeStepsArray, measurementArray, xlabel="Time", ylabel="S_z", show = true) if yo
+    #If you want a line
+    #plot(timeStepsArray, measurementArray, xlabel="Time", ylabel="S_z", show = true)
+    #Saves plot into this file
     savefig(raw"IO FILES\Scatterplots\TEBDScatterPlot.png")
     return
   end

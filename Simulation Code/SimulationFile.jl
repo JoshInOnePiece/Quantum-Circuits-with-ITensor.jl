@@ -9,12 +9,12 @@ let
     #Names of input and output files
     print("Imported Libraries\n")
     print("Opening Files\n")
-    inputAdderFileName = raw"IO FILES\bitAdderInput.txt"
-    outputAdderFileName = raw"IO FILES\bitAdderOutput.txt"
-    inputVariationalFileName = raw"IO FILES\variationalAnsantzInput.txt"
-    outputVariationalFileName = raw"IO FILES\variationalAnsantzOutput.txt"
-    inputTEBDFileName = raw"IO FILES\tebdInput.txt"
-    outputTEBDFileName = raw"IO FILES\tebdOutput.txt"
+    inputAdderFileName = raw"IO FILES\Input Files\bitAdderInput.txt"
+    outputAdderFileName = raw"IO FILES\Output Files\bitAdderOutput.txt"
+    inputVariationalFileName = raw"IO FILES\Input Files\variationalAnsantzInput.txt"
+    outputVariationalFileName = raw"IO FILES\Output Files\variationalAnsantzOutput.txt"
+    inputTEBDFileName = raw"IO FILES\Input Files\tebdInput.txt"
+    outputTEBDFileName = raw"IO FILES\Output Files\tebdOutput.txt"
 
     #opens files from which input and output is stored
     inputAdderFile = open(inputAdderFileName,"r")

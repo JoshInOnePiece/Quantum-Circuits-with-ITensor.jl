@@ -108,6 +108,7 @@ function fileAdderCircuit(inputFile, outputFile)
             end
 
             #Outputs sum to the output and prints it on the terminal
+            write(outputFile, "Sum of bits: ")
             for i in 1:(lengthOfEachBit+1)
                 write(outputFile, string(result[i]))
                 #@printf("%i", result[i]);
