@@ -47,7 +47,7 @@ For example:<br><br>
 ## Running Initial Simulation
 Now we are ready to start simulating circuits! Go into the Simulatin Circuits folder and copy the code in the SimulationFile.jl folder and paste it into the julia terminal and press enter. The simulation will start and there will printed output to show the progress of the simulation. Once the simulation is complete, the outputs for each circuit will be in the IO Files/Output Files folder with the corresponding file names. Additionally, scatterplots for the Sz measurements v.s. time for the TEBD and variational ansantz circuit are located in IO Files/Scatterplots folder. <br>
 
-Sample of when Simulation Code is ran:
+Sample of when Simulation Code is ran:<br>
 ![Sample-Of-Running-Simulation-Code](Images/Complete%20Run%20of%20Simulation%20Code.png) <br><br>
 
 To rerun the simulation, you must copy and paste the code from SimulationFile.jl and paste it into the Julia Terminal. We must do this since there is no way to run julia files in the terminal unlike java and c files. On the bright side, when you rerun the code is it much faster.
@@ -55,20 +55,17 @@ To rerun the simulation, you must copy and paste the code from SimulationFile.jl
 ## Changing Input Files for Each Circuit in Simulation
 Input for each circuit in the simulation can be changed in the IO FIles/Input files folder. Below, will describe the format for the input and what each input represents. Note, the larger you make the input the longer the simulation is going to take as it takes more resources to setup and run the circuit
 
-- Multi-Qubit Adder Circuit:
+- Multi-Qubit Adder Circuit(IO Files/Input Files/bitAdderInput.txt):
     - First Line: Binary Integer of any length
     - Second Line: Binary Integer of any length
     - Third Line: Site to measure the entanglement relative to the first site (From site 2 to (4*length of longer bit))
-- Variational Ansantz Circuit:
+- Variational Ansantz Circuit(IO Files/Input Files/variationalAnsantzInput.txt):
     - First Line: Number of sites
     - Second Line: Duration of each time step
     - Third Line: Total number of time(Note the total number of time divided by the duration for each time step is the amount of time steps that the circuit will undergo)
     - Fourth Line: Site to measure the entanglement relative to the first site (From site 2 to the total amount of sites)
-- TEBD Circuit:
+- TEBD Circuit(IO Files/Input Files/tebdInput.txt):
     - First Line: Number of sites
     - Second Line: Duration of each time step
     - Third Line: Total number of time(Note the total number of time divided by the duration for each time step is the amount of time steps that the circuit will undergo)
     - Fourth Line: Site to measure the entanglement relative to the first site (From site 2 to the total amount of sites)
-
-
-
